@@ -14,16 +14,35 @@
   <script type="text/babel">
     const root = document.getElementById('root');
     function App() {
-      const [counter, setCounter] = React.useState(0);
-      const onClick = () => {
-        // 이전 값을 이용해 현재 값을 계산할 때, 좀 더 안전한 방법
-        setCounter((current) => current + 1);
+      const [minutes, setMinutes] = React.useState(0);
+      const onChange = (event) => {
+        setMinutes(event.target.value);
       };
-
+      const reset = () => setMinutes(0);
       return (
         <div>
-          <h3>Total clicks: {counter}</h3>
-          <button onClick={onClick}>Click me</button>
+          <h1>Super Converter</h1>
+          <div>
+            <label htmlFor='minutes'>Minutes</label>
+            <input
+              value={minutes}
+              id='minutes'
+              type='number'
+              placeholder='Minutes'
+              onChange={onChange}
+            />
+          </div>
+
+          <div>
+            <label htmlFor='hours'>Hours</label>
+            <input
+              value={Math.round(minutes / 60)}
+              id='hours'
+              type='number'
+              placeholder='Hours'
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
         </div>
       );
     }
