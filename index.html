@@ -16,9 +16,8 @@
     function App() {
       const [counter, setCounter] = React.useState(0);
       const onClick = () => {
-        setCounter(counter + 1);
-        // counter = counter +1
-        // 리랜더링 진행
+        // 이전 값을 이용해 현재 값을 계산할 때, 좀 더 안전한 방법
+        setCounter((current) => current + 1);
       };
 
       return (
