@@ -2,42 +2,53 @@ import Button from './Button';
 import styles from './css/App.module.css';
 import { useState, useEffect } from 'react';
 
-function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState('');
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => setKeyword(event.target.value);
-  console.log('i run all the time');
-
+function Hello1() {
   useEffect(() => {
-    console.log('I run only Onced');
+    console.log('created! :)');
+    //cleanup function
+    return () => console.log('destroyed :(');
+  }, []);
+  return <h1>Hello</h1>;
+}
+
+function Hello2() {
+  function byeFun() {
+    console.log('Bye :(');
+  }
+  function hiFn() {
+    console.log('hi! :)');
+    //cleanup function
+    return byeFun;
+  }
+  useEffect(hiFn, []);
+  return <h1>Hello</h1>;
+}
+
+function Hello() {
+  useEffect(() => {
+    console.log('hi! :)');
+    return () => console.log('Bye :(');
   }, []);
 
-  // 키워드가 변할때만 실행
-  useEffect(() => {
-    if (keyword !== '' && keyword.length >= 5) {
-      console.log("I run when 'keyword' changes", keyword);
-    }
-  }, [keyword]);
+  // 위 아래 같은 코드
+  // 보통 위에처럼 사용함
+  useEffect(function () {
+    console.log('hi! :)');
+    return function () {
+      console.log('Bye :(');
+    };
+  }, []);
 
-  useEffect(() => {
-    console.log("I run when 'counter' changes", counter);
-  }, [counter]);
+  return <h1>Hello</h1>;
+}
 
-  useEffect(() => {
-    console.log("I run when 'keyword & counter' changes", counter);
-  }, [keyword, counter]);
-
+function App() {
+  const [showing, setShowing] = useState(false);
+  const onClick = () => setShowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type='text'
-        placeholder='Search here...'
-      />
-      <h1 className={styles.title}>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? 'hide' : 'show'}</button>
     </div>
   );
 }
